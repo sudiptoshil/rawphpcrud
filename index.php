@@ -19,13 +19,22 @@ $query = "SELECT * FROM user_data";
 $read = $db->select($query);
 
 ?>
+<?php
+
+if (isset($_GET['message'])) {
+    echo "<span style='color:red'>" . $_GET['message'] . "</span>";
+}
+
+?>
 
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0" style="margin-top: 5%;">
 
   <div class="container">
+
    <div class="row">
        <div class="col-md-12">
+       <a class="btn btn-primary" href="create.php" style="margin-bottom:2%">Create</a>
        <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -37,14 +46,15 @@ $read = $db->select($query);
     </tr>
   </thead>
   <tbody>
+    <?php $i = 1;?>
       <?php if ($read) {?>
         <?php while ($row = $read->fetch_assoc()) {?>
     <tr>
-      <th scope="row">1</th>
+      <th scope="row"><?php echo $i++;?></th>
       <td><?php echo $row['name']; ?></td>
       <td><?php echo $row['email']; ?></td>
       <td><?php echo $row['skill']; ?></td>
-      <td><a href ="update.php?id=<?php echo $row['id'];?>"type="button" class="btn btn-danger">EDIT</a></td>
+      <td><a href ="update.php?id=<?php echo $row['id']; ?>"type="button" class="btn btn-danger">EDIT</a></td>
     </tr>
       <?php }?>
       <?php } else {?>
