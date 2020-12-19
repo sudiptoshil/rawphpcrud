@@ -54,7 +54,12 @@ if (isset($_GET['message'])) {
       <td><?php echo $row['name']; ?></td>
       <td><?php echo $row['email']; ?></td>
       <td><?php echo $row['skill']; ?></td>
-      <td><a href ="update.php?id=<?php echo $row['id']; ?>"type="button" class="btn btn-danger">EDIT</a></td>
+      <td>
+        <a href ="update.php?id=<?php echo urlencode($row['id']); ?>"type="button" class="btn btn-success">EDIT</a>
+       
+        <a href ="update.php?id=<?php echo urlencode($row['id']); ?>"type="button" class="btn btn-danger">DELETE</a>
+      </td>
+     
     </tr>
       <?php }?>
       <?php } else {?>

@@ -5,8 +5,11 @@ include "config.php";
 ?>
 
 <?php
-
+$id = $_GET['id'];
 $db = new Database();
+$query = "SELECT * FROM user_data WHERE id=$id";
+$getData = $db->select($query)->fetch_assoc();
+
 if (isset($_POST['submit'])) {
     $name = mysqli_real_escape_string($db->link,$_POST['name']); // mysqli_real_escape_string ব্যবহার করলে script চালাতে পারবে না mysqli_real_escape_string দুইটা প্যরামিটার নেয়
     $email = mysqli_real_escape_string($db->link,$_POST['email']); 
@@ -14,8 +17,11 @@ if (isset($_POST['submit'])) {
     if ($name =='' || $email == '' || $skill == '') {
         $error = "Field Must Not Be Empty!!";
     } else {
-        $query = "INSERT INTO user_data(name,email,skill) VALUES('$name','$email','$skill')";
-        $create = $db->insert($query);
+        $query = "
+        UPDATE user_data SET name='$name',email='$email',skill='$skill'
+        WHERE id =$id
+        ";
+        $update = $db->update($query);
     }
 }
 
@@ -35,22 +41,22 @@ if (isset($_POST['submit'])) {
               echo "<span style='color:red'>" .$error."</span>";
           }
           ?>
-            <form action="create.php" method="post">
+            <form action="update.php?id=<?php echo $id;?>" method="post">
               <div class="form-group">
                 <label for="exampleInputEmail1">Name</label>
-                <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
+                <input type="text" name="name" class="form-control" value="<?php echo $getData['name']?>" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
                 <small id="emailHelp" class="form-text text-muted"></small>
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">Email</label>
-                <input type="email" name="email" class="form-control" id="exampleInputPassword1" placeholder="">
+                <input type="email" name="email" class="form-control" value="<?php echo $getData['email']?>" id="exampleInputPassword1" placeholder="">
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">Skill</label>
-                <input type="text" name="skill" class="form-control" id="exampleInputPassword1" placeholder="">
+                <input type="text" name="skill" class="form-control" value="<?php echo $getData['skill']?>" id="exampleInputPassword1" placeholder="">
               </div>
               <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-              <button type="reset" class="btn btn-primary">Cancel</button>
+              <a href="index.php" type="button" class="btn btn-primary">Cancel</a>
             </form>
 
 </div>
